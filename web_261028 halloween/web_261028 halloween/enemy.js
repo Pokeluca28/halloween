@@ -13,6 +13,10 @@ class Enemy {
         this.firerate = 0.5;
         this.firerateAux = this.firerate;
 
+        this.boundingcollision = 20;
+        this.boundingradiusSqr = this.boundingcollision * this.boundingradius;
+
+
         this.bullets = [];
     }
 
@@ -87,6 +91,12 @@ class Enemy {
         ctx.drawImage(this.img, -this.img.width / 2, -this.img.height / 2);
 
         ctx.restore();
+
+        //dibuhar el radio
+        ctx.beginPath();
+        ctx.fillStyle("red");
+        ctx.arc(this.x, this.y, this.boundingradius, 0, Math.PI * 2)
+        ctx.fill();
 
 
         // draw the brooms
