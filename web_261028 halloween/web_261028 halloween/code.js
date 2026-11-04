@@ -101,6 +101,12 @@ function Loop() {
     // compute delta time
     let now = Date.now();
     deltaTime = (now - time) / 1000;
+
+    if(deltaTime > 1){
+        time = now;
+        return;
+    }
+
     timeSinceStart += deltaTime;
     time = now;
 

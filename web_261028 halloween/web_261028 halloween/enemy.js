@@ -7,6 +7,9 @@ class Enemy {
         this.img = img;
         this.speed = 200;
 
+        this.goingright = true;
+        this
+
         this.firerate = 0.5;
         this.firerateAux = this.firerate;
 
@@ -17,6 +20,19 @@ class Enemy {
         this.rotation = Math.cos(timeSinceStart * 4) * 0.2;
 
         // movement
+        if(this.goingright){
+            this.x += this.speed * deltaTime
+            if(this.x >= canvas.width){
+                this.goingright = false
+            }
+            
+        }
+        else{
+            this.x -= this.speed * deltaTime;
+            if(this.x <= 0){
+                this.goingright = true;
+            }
+        }
 
 
         // this.firerateAux += deltaTime;
