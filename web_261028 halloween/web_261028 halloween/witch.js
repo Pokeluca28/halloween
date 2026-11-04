@@ -7,6 +7,9 @@ class Witch {
         this.img = img;
         this.speed = 200;
 
+        this.firerate = 0.5;
+        this.firerateAux = this.firerate;
+
         this.brooms = [];
     }
 
@@ -24,7 +27,9 @@ class Witch {
         this.x = Math.min(this.x, canvas.width - 20);
         this.x = Math.max(this.x, 20);
 
-        if(Keys["Space"]){
+        this.firerateAux += deltaTime;
+        if(Keys["Space"] && this.firerateAux >= this.firerate) {
+
             const broom = {
                 img: graphicAssets.broom.img,
                 x: this.x, 
@@ -44,12 +49,25 @@ class Witch {
                     ctx.restore();
                 }
             }
-            this.brooms.push(broom)
+            this.brooms.push(broom);
+            this.firerateAux = 0;
+
+            this.brooms.push(broom);
+            this.firerateAux = 0;
+
+             for(let i = 0; i < this.brooms.length; i++){
+                 const broom = this.brooms[i];
+                 broom.update(deltaTime);
+                 if (broom.y < -10){
+                    this.brooms.splice(i,1);
+                 }
+             }
         }
 
         // update the brooms
         this.brooms.forEach(broom => {
             broom.Update(deltaTime);
+            
         });
     }
     
