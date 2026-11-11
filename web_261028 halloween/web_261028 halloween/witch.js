@@ -30,38 +30,7 @@ class Witch {
         this.firerateAux += deltaTime;
         if(Keys["Space"] && this.firerateAux >= this.firerate) {
 
-            const broom = {
-                img: graphicAssets.broom.img,
-                x: this.x, 
-                y: this.y,
-                speed: 400,
-                Update: function(deltaTime){
-                    this.y -= this.speed * deltaTime;
-                },
-                Draw: function(){
-                    ctx.save();
-
-                    ctx.translate(this.x, this.y);
-                    ctx.scale(3, 3);
-
-                    ctx.drawImage(this.img, -this.img.width / 2, -this.img.height / 2);
-
-                    ctx.restore();
-                }
-            }
-            this.brooms.push(broom);
-            this.firerateAux = 0;
-
-            this.brooms.push(broom);
-            this.firerateAux = 0;
-
-             for(let i = 0; i < this.brooms.length; i++){
-                 const broom = this.brooms[i];
-                 broom.update(deltaTime);
-                 if (broom.y < -10){
-                    this.brooms.splice(i,1);
-                 }
-             }
+            this.Shoot(deltaTime);
         }
 
         // update the brooms
@@ -71,6 +40,41 @@ class Witch {
         });
     }
     
+
+    Shoot(deltaTime) {
+        const broom = {
+            img: graphicAssets.broom.img,
+            x: this.x,
+            y: this.y,
+            speed: 400,
+            Update: function (deltaTime) {
+                this.y -= this.speed * deltaTime;
+            },
+            Draw: function () {
+                ctx.save();
+
+                ctx.translate(this.x, this.y);
+                ctx.scale(3, 3);
+
+                ctx.drawImage(this.img, -this.img.width / 2, -this.img.height / 2);
+
+                ctx.restore();
+            }
+        };
+        this.brooms.push(broom);
+        this.firerateAux = 0;
+
+        this.brooms.push(broom);
+        this.firerateAux = 0;
+
+        for (let i = 0; i < this.brooms.length; i++) {
+            const broom = this.brooms[i];
+            broom.update(deltaTime);
+            if (broom.y < -10) {
+                this.brooms.splice(i, 1);
+            }
+        }
+    }
 
     Draw() {
         ctx.save();

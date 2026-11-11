@@ -7,8 +7,6 @@ class Enemy {
         this.img = img;
         this.speed = 200;
 
-        this.goingright = true;
-        this
 
         this.firerate = 0.5;
         this.firerateAux = this.firerate;
@@ -18,6 +16,8 @@ class Enemy {
 
 
         this.bullets = [];
+
+        this.timeTopShoot = 5 + (Math.random() * 5);
     }
 
     Update(deltaTime) {
@@ -37,6 +37,10 @@ class Enemy {
                 this.goingright = true;
             }
         }
+
+        this.timeTopShoot -= deltaTime;
+        if (this.timeTopShoot <= 0.0)
+            this.Shot()
 
 
         // this.firerateAux += deltaTime;
@@ -94,7 +98,7 @@ class Enemy {
 
         //dibuhar el radio
         ctx.beginPath();
-        ctx.fillStyle("red");
+        ctx.fillStyle(rgba (255, 255, 255, 255));
         ctx.arc(this.x, this.y, this.boundingradius, 0, Math.PI * 2)
         ctx.fill();
 

@@ -5,6 +5,12 @@ var time = 0;
 var deltaTime = 0;
 var timeSinceStart = 0;
 
+var witch = null;
+var enemies = [];
+var enemiescount = 9;
+var enemyShootRate = 0;
+var enemyShootRateAux = 0;
+
 var Keys =  {};
 
 var graphicAssets = {
@@ -87,8 +93,10 @@ function Start() {
     witch = new Witch(canvas.width / 2, canvas.height - 100, 100, graphicAssets.witch.img);
 
     
-    for(let i = 0; i < enemiescount; i++){
-        const enemy = new Enemy(50, 50, 100, graphicAssets.enemy.img);
+    for (let i = 0; i < enemiescount; i++){
+        const x = 50 * (i % 9 + 1);
+        const y = 50 + Math.trunc(i / 9) * 60;
+        const enemy = new Enemy(x, y, 100, graphicAssets.enemy.img);
         enemies.push(enemy);
     }
 
@@ -117,7 +125,49 @@ function Loop() {
 function Update(deltaTime) {
     witch.Update(deltaTime);
 
-    enemies.forEach (enemy => enemy.Update(deltaTime));
+    enemies.forEach(enemy => enemy.Update(deltaTime));
+
+    //enemy shoot
+    enemyShootRate += deltaTime
+    if (enemyShootRateAux >= enemyShootRate) {
+        //random enemy shoot
+        const radioEnemy = enemies[Math.trunc(Math.random() * enemies.length)];
+        randomEnemy?.Shot();
+        
+        enemyShootRateAux = 0;
+    }
+    
+    //Colisiones
+    //1: whitch bullets ->> enemies
+    for (let i = 0; 1 < witch.brooms.length; i++){
+        const broom = witch.brooms[i];
+        for (let j = 0; j < enemies.length; j++){
+            const enemies = enemies[j];
+            if (PointInsideCircle2(broom.x, broom.y, enemy.x, enemy.y, enemy.boundingradiusSqr)){
+                alert("colision!");
+
+                witch.brooms.splice(i, 1);
+                i--;
+                enemies.splice(j, 1);
+                j--;
+            }
+            
+        }
+        if (bullet.y > canvas.height + 10) {
+            this.bullets.splice(i, 1);
+            i--;
+        }
+    }
+
+    for (let j = 0; j < enemy.bullet.length; j++){
+        const bullet = enemy.bullets[j];
+        if (PointInsideCircle2(bullet.x, bullety, witch.x, witch.y, witch.boundingradiusSqr)){
+            const dx = px - cx,
+                  dy = py - cy;
+            const d2 = (dx * dx) + (dy * dy);
+        }
+    }
+    
 }
 
 function Draw() {
@@ -143,4 +193,24 @@ function Draw() {
     ctx.fillText(`dt: ${deltaTime.toFixed(4)}`, 10, 42);
 }
 
+function PointInsideCircle(px, py, cx, cy, cr) {
+    const dx = px - cx,
+          dy = py - cy;
+    const d2 = Math.sqrt(dx * dx) + (dy * dy);
+
+    return d2 <= cr;
+
+}
+
+// -----------Algo --------------------
+
+function PointInsideCircle2(px, py, cx, cy, cr2) {
+    const dx = px - cx,
+          dy = py - cy;
+    const d2 = (dx * dx) + (dy * dy);
+
+    return d2 <= cr2;
+    
+}
+    
 window.onload = Init;
